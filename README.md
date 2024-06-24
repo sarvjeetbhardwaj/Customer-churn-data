@@ -28,6 +28,27 @@ In this customer churn data engineering project, we will build and automate a py
     6. Create a glue crawler to infer the file schema (Create an appropriate IAM role for glue)
     7. Table created in database as a part of crawler is stored under DataCatalogue
     8. Use Athena to query data stored on datacatalogue (Create a different S3 bucket to store athena    query results)
+    9. Create a redshift cluster
+    10. In the redshift cluster, create a table customer_churn(refer to create_table.sql)
+    11. Create a redshift-glue connection so that glue can access redshift.
+    12. Create a glue crawler to infer schema from the table(customer_churn) that has been created in redshfit cluster (Use JDBC connector option while creating a crawler)
+    13. Incase the glue-redshift crawler fails , create a vpc endpoint by
+        Redshift --> Selct the cluster --> Go to properties --> Click on vpc to open a new dialogue box --> Create a new endpoint gateway 
+        Then run the crawler again. (Cloudwatch logs can be used to get a deeper understanding of errors)
+    14. We have created two crawlers - one to read schema from the data in S3 bucket & other to read    schema from the table created in redshift.We need to map the schema of data in S3 bucket as per the schema in table in redshift.
+    15. Hence we will be creating an ETL glue job
+        Source/Extract :: Table created in database as a part of crawler to infer fileschema from S3
+        Transform :: Change the schema and map the columns as per the columns created in Redshift
+        Load :: Select the redshift database-table that was created
+
+        Extrct ::
+        ![alt text](image-1.png)
+        Transform::
+        ![alt text](image-2.png)
+        Load ::
+        ![alt text](image-3.png)
+
+    
 
 # Project Architecture
 ![alt text](image.png)
